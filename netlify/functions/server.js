@@ -1,52 +1,32 @@
-// Netlify Function for Express server
-const { createServer } = require('../../server/index.js');
+const serverless = require('serverless-http');
+const express = require('express');
+const { registerRoutes } = require('../../dist/server/routes.js');
 
 let app;
 
+async function createApp() {
+  const expressApp = express();
+  
+  // Trust proxy for Netlify
+  expressApp.set('trust proxy', true);
+  
+  // Parse JSON bodies
+  expressApp.use(express.json());
+  expressApp.use(express.urlencoded({ extended: true }));
+  
+  // Register routes
+  await registerRoutes(expressApp);
+  
+  return expressApp;
+}
+
 exports.handler = async (event, context) => {
   if (!app) {
-    app = await createServer();
+    app = await createApp();
   }
-
-  return new Promise((resolve, reject) => {
-    const req = {
-      method: event.httpMethod,
-      url: event.path,
-      headers: event.headers,
-      body: event.body
-    };
-
-    const res = {
-      statusCode: 200,
-      headers: {},
-      body: '',
-      end: function(body) {
-        this.body = body;
-        resolve({
-          statusCode: this.statusCode,
-          headers: this.headers,
-          body: this.body
-        });
-      },
-      json: function(data) {
-        this.headers['Content-Type'] = 'application/json';
-        this.body = JSON.stringify(data);
-        resolve({
-          statusCode: this.statusCode,
-          headers: this.headers,
-          body: this.body
-        });
-      },
-      status: function(code) {
-        this.statusCode = code;
-        return this;
-      },
-      set: function(key, value) {
-        this.headers[key] = value;
-        return this;
-      }
-    };
-
-    app(req, res);
-  });
+  
+  // Create serverless handler
+  const handler = serverless(app);
+  
+  return await handler(event, context);
 };
