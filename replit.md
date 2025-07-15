@@ -40,7 +40,7 @@ Preferred communication style: Simple, everyday language.
 - User profile management and persistence
 
 ### Payment Integration
-- Razorpay payment gateway for job posting fees (₹2,500 per job)
+- Razorpay payment gateway for job posting fees (₹1 per job)
 - Order creation and payment verification
 - Payment status tracking in database
 - Secure payment modal with real-time status updates
@@ -84,7 +84,7 @@ Preferred communication style: Simple, everyday language.
 
 ### Environment Configuration
 - Database connection via `DATABASE_URL` environment variable
-- Razorpay API keys for payment processing
+- Razorpay API keys for payment processing (currently using live credentials)
 - Session secret for authentication security
 - Replit-specific configuration for OIDC
 

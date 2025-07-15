@@ -5,8 +5,8 @@ import { setupAuth, isAuthenticated } from "./replitAuth";
 import { insertJobSchema, insertApplicationSchema, insertPaymentSchema } from "@shared/schema";
 import { z } from "zod";
 
-const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "rzp_test_key";
-const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET || "rzp_test_secret";
+const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "rzp_live_SIDzkLGGibqEns";
+const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET || "Z0Bh3UCPSCAet8FSu9CrfA9a";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Auth middleware
@@ -248,7 +248,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Payment routes
   app.post('/api/payments/create-order', isAuthenticated, async (req: any, res) => {
     try {
-      const { jobId, amount = 295000 } = req.body; // 2950 INR in paise
+      const { jobId, amount = 100 } = req.body; // 1 INR in paise
       const userId = req.user.claims.sub;
 
       // Create payment record

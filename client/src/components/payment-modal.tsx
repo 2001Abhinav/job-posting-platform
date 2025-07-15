@@ -27,7 +27,7 @@ export default function PaymentModal({ isOpen, onClose, jobId }: PaymentModalPro
     mutationFn: async () => {
       const response = await apiRequest("POST", "/api/payments/create-order", {
         jobId,
-        amount: 295000, // 2950 INR in paise
+        amount: 100, // 1 INR in paise
       });
       return response.json();
     },
@@ -108,16 +108,12 @@ export default function PaymentModal({ isOpen, onClose, jobId }: PaymentModalPro
             <div className="space-y-2">
               <div className="flex justify-between items-center">
                 <span className="text-gray-700">Job Posting Fee</span>
-                <span className="font-semibold text-gray-900">₹2,500</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-700">GST (18%)</span>
-                <span className="font-semibold text-gray-900">₹450</span>
+                <span className="font-semibold text-gray-900">₹1</span>
               </div>
               <div className="border-t pt-2">
                 <div className="flex justify-between items-center">
                   <span className="text-lg font-semibold text-gray-900">Total</span>
-                  <span className="text-lg font-bold text-primary">₹2,950</span>
+                  <span className="text-lg font-bold text-primary">₹1</span>
                 </div>
               </div>
             </div>

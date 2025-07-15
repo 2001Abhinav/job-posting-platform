@@ -19,7 +19,7 @@ export default function Landing() {
               className="bg-white text-primary px-8 py-3 text-lg font-semibold hover:bg-gray-100"
               onClick={() => window.location.href = "/api/login"}
             >
-              Post a Job - ₹2,500
+              Post a Job - ₹1
             </Button>
             <Link href="/jobs">
               <Button 

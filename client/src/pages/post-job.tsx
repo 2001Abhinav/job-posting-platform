@@ -119,7 +119,7 @@ export default function PostJob() {
           <Alert className="mt-6 bg-blue-50 border-blue-200">
             <InfoIcon className="h-4 w-4 text-blue-500" />
             <AlertDescription className="text-blue-800">
-              <span className="font-medium">Job posting fee: ₹2,500 (Payment required before publication)</span>
+              <span className="font-medium">Job posting fee: ₹1 (Payment required before publication)</span>
             </AlertDescription>
           </Alert>
         </div>
@@ -245,7 +245,7 @@ export default function PostJob() {
               <div className="border-t pt-6">
                 <div className="flex items-center justify-between">
                   <div className="text-sm text-gray-600">
-                    <p>Job posting fee: <span className="font-semibold text-gray-900">₹2,500</span></p>
+                    <p>Job posting fee: <span className="font-semibold text-gray-900">₹1</span></p>
                     <p>Your job will be live for 30 days</p>
                   </div>
                   <Button 

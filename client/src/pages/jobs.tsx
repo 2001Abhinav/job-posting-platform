@@ -36,7 +36,8 @@ export default function Jobs() {
   });
 
   const handleFilterChange = (key: string, value: string) => {
-    setFilters(prev => ({ ...prev, [key]: value, page: 1 }));
+    const filterValue = value === "all" ? "" : value;
+    setFilters(prev => ({ ...prev, [key]: filterValue, page: 1 }));
   };
 
   const handleApplyFilters = () => {
@@ -96,12 +97,12 @@ export default function Jobs() {
 
                   <div>
                     <Label htmlFor="location" className="text-sm font-medium text-gray-700 mb-2">Location</Label>
-                    <Select value={filters.location} onValueChange={(value) => handleFilterChange("location", value)}>
+                    <Select value={filters.location || "all"} onValueChange={(value) => handleFilterChange("location", value)}>
                       <SelectTrigger>
                         <SelectValue placeholder="All Locations" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">All Locations</SelectItem>
+                        <SelectItem value="all">All Locations</SelectItem>
                         <SelectItem value="Mumbai">Mumbai</SelectItem>
                         <SelectItem value="Delhi">Delhi</SelectItem>
                         <SelectItem value="Bangalore">Bangalore</SelectItem>
@@ -129,12 +130,12 @@ export default function Jobs() {
 
                   <div>
                     <Label htmlFor="experience" className="text-sm font-medium text-gray-700 mb-2">Experience</Label>
-                    <Select value={filters.experience} onValueChange={(value) => handleFilterChange("experience", value)}>
+                    <Select value={filters.experience || "all"} onValueChange={(value) => handleFilterChange("experience", value)}>
                       <SelectTrigger>
                         <SelectValue placeholder="All Levels" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">All Levels</SelectItem>
+                        <SelectItem value="all">All Levels</SelectItem>
                         <SelectItem value="Entry Level">Entry Level</SelectItem>
                         <SelectItem value="Mid Level">Mid Level</SelectItem>
                         <SelectItem value="Senior Level">Senior Level</SelectItem>
