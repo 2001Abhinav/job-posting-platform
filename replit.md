@@ -90,11 +90,13 @@ Preferred communication style: Simple, everyday language.
 - Replit-specific configuration for OIDC
 - Real-time payment verification with signature validation
 
-### Railway Deployment
-- Configured for Railway platform with railway.json
-- Free PostgreSQL database included
+### Multi-Platform Deployment
+- Configured for multiple platforms: Railway, Render, Vercel
+- Railway: $5 monthly credit, PostgreSQL included
+- Render: 750 hours/month free tier, sleeps after 15min inactivity
+- Vercel: Serverless functions, generous free tier
+- All platforms support PostgreSQL databases
 - Automatic deployments from GitHub
-- $5 monthly credit covers typical usage
 - Custom domain support available
 
 ### File Structure

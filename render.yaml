@@ -2,8 +2,10 @@ services:
   - type: web
     name: jobboard
     env: node
-    buildCommand: npm run build
+    buildCommand: npm install && npm run build
     startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
+    healthCheckPath: /
+    autoDeploy: true
