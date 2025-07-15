@@ -90,6 +90,13 @@ Preferred communication style: Simple, everyday language.
 - Replit-specific configuration for OIDC
 - Real-time payment verification with signature validation
 
+### Railway Deployment
+- Configured for Railway platform with railway.json
+- Free PostgreSQL database included
+- Automatic deployments from GitHub
+- $5 monthly credit covers typical usage
+- Custom domain support available
+
 ### File Structure
 ```
 ├── client/          # Frontend React application
