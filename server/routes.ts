@@ -256,7 +256,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Payment routes
   app.post('/api/payments/create-order', isAuthenticated, async (req: any, res) => {
     try {
-      const { jobId, amount = 100 } = req.body; // 1 INR in paise
+      const { jobId, amount = 250000 } = req.body; // 2500 INR in paise
       const userId = req.user.claims.sub;
 
       // Create payment record

@@ -40,7 +40,7 @@ Preferred communication style: Simple, everyday language.
 - User profile management and persistence
 
 ### Payment Integration
-- Real Razorpay payment gateway for job posting fees (₹1 per job)
+- Real Razorpay payment gateway for job posting fees (₹2,500 per job)
 - Live API integration with order creation and payment verification
 - Cryptographic signature validation for payment security
 - Payment status tracking in database with real-time updates

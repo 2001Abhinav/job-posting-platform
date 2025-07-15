@@ -35,7 +35,7 @@ export default function Home() {
               <div className="mt-4">
                 <Link href="/post-job">
                   <Button className="w-full">
-                    Post Job - ₹1
+                    Post Job - ₹2,500
                   </Button>
                 </Link>
               </div>
@@ -97,7 +97,7 @@ export default function Home() {
                 </li>
                 <li className="flex items-start">
                   <span className="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3 mt-0.5">2</span>
-                  <span>Complete the secure payment process (₹1)</span>
+                  <span>Complete the secure payment process (₹2,500)</span>
                 </li>
                 <li className="flex items-start">
                   <span className="bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3 mt-0.5">3</span>
