@@ -40,10 +40,11 @@ Preferred communication style: Simple, everyday language.
 - User profile management and persistence
 
 ### Payment Integration
-- Razorpay payment gateway for job posting fees (₹1 per job)
-- Order creation and payment verification
-- Payment status tracking in database
-- Secure payment modal with real-time status updates
+- Real Razorpay payment gateway for job posting fees (₹1 per job)
+- Live API integration with order creation and payment verification
+- Cryptographic signature validation for payment security
+- Payment status tracking in database with real-time updates
+- Secure payment modal with UPI/card/netbanking support
 
 ### Job Management
 - Job posting with rich form validation
@@ -84,9 +85,10 @@ Preferred communication style: Simple, everyday language.
 
 ### Environment Configuration
 - Database connection via `DATABASE_URL` environment variable
-- Razorpay API keys for payment processing (currently using live credentials)
+- Razorpay live API keys integrated for real payment processing
 - Session secret for authentication security
 - Replit-specific configuration for OIDC
+- Real-time payment verification with signature validation
 
 ### File Structure
 ```

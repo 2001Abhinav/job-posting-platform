@@ -4,9 +4,17 @@ import { storage } from "./storage";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { insertJobSchema, insertApplicationSchema, insertPaymentSchema } from "@shared/schema";
 import { z } from "zod";
+import Razorpay from "razorpay";
+import crypto from "crypto";
 
 const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID || "rzp_live_SIDzkLGGibqEns";
 const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET || "Z0Bh3UCPSCAet8FSu9CrfA9a";
+
+// Initialize Razorpay
+const razorpay = new Razorpay({
+  key_id: RAZORPAY_KEY_ID,
+  key_secret: RAZORPAY_KEY_SECRET,
+});
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Auth middleware
@@ -260,13 +268,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         status: "pending",
       });
 
-      // Mock Razorpay order creation
-      const order = {
-        id: `order_${Date.now()}`,
-        amount,
+      // Create real Razorpay order
+      const order = await razorpay.orders.create({
+        amount: amount, // amount in paise
         currency: "INR",
-        status: "created",
-      };
+        receipt: `job_${jobId}_${Date.now()}`,
+        notes: {
+          jobId: jobId.toString(),
+          employerId: userId,
+          paymentId: payment.id.toString(),
+        },
+      });
 
       res.json({
         orderId: order.id,
@@ -283,7 +295,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post('/api/payments/verify', isAuthenticated, async (req: any, res) => {
     try {
-      const { paymentId, razorpayPaymentId, razorpayOrderId } = req.body;
+      const { paymentId, razorpayPaymentId, razorpayOrderId, razorpaySignature } = req.body;
       const userId = req.user.claims.sub;
 
       const payment = await storage.getPayment(paymentId);
@@ -293,6 +305,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       if (payment.employerId !== userId) {
         return res.status(403).json({ message: "Forbidden" });
+      }
+
+      // Verify Razorpay signature
+      const body = razorpayOrderId + "|" + razorpayPaymentId;
+      const expectedSignature = crypto
+        .createHmac("sha256", RAZORPAY_KEY_SECRET)
+        .update(body.toString())
+        .digest("hex");
+
+      if (expectedSignature !== razorpaySignature) {
+        return res.status(400).json({ message: "Invalid payment signature" });
+      }
+
+      // Verify payment with Razorpay
+      const razorpayPayment = await razorpay.payments.fetch(razorpayPaymentId);
+      
+      if (razorpayPayment.status !== "captured") {
+        return res.status(400).json({ message: "Payment not captured" });
       }
 
       // Update payment status
@@ -307,7 +337,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         status: "active",
         paymentId: razorpayPaymentId,
         paymentStatus: "completed",
-        expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
       });
 
       res.json({ success: true, payment: updatedPayment });

@@ -71,19 +71,53 @@ export default function PaymentModal({ isOpen, onClose, jobId }: PaymentModalPro
   const initiatePayment = (orderData: any) => {
     setIsProcessing(true);
 
-    // Mock Razorpay integration
-    // In a real implementation, you would use the Razorpay SDK
-    const mockPaymentId = `pay_${Date.now()}`;
-    
-    setTimeout(() => {
-      // Simulate payment success
-      verifyPaymentMutation.mutate({
-        paymentId: orderData.paymentId,
-        razorpayPaymentId: mockPaymentId,
-        razorpayOrderId: orderData.orderId,
-      });
+    // Real Razorpay integration
+    const options = {
+      key: orderData.keyId,
+      amount: orderData.amount,
+      currency: "INR",
+      name: "Job Portal",
+      description: "Job Posting Fee",
+      order_id: orderData.orderId,
+      handler: function (response: any) {
+        verifyPaymentMutation.mutate({
+          paymentId: orderData.paymentId,
+          razorpayPaymentId: response.razorpay_payment_id,
+          razorpayOrderId: response.razorpay_order_id,
+          razorpaySignature: response.razorpay_signature,
+        });
+        setIsProcessing(false);
+      },
+      prefill: {
+        name: "Job Poster",
+        email: "user@example.com",
+        contact: "9999999999"
+      },
+      theme: {
+        color: "#3B82F6"
+      },
+      modal: {
+        ondismiss: function() {
+          setIsProcessing(false);
+        }
+      },
+      timeout: 300, // 5 minutes timeout
+      retry: {
+        enabled: true,
+        max_count: 3
+      }
+    };
+
+    const rzp = new (window as any).Razorpay(options);
+    rzp.on('payment.failed', function (response: any) {
       setIsProcessing(false);
-    }, 3000);
+      toast({
+        title: "Payment Failed",
+        description: response.error.description || "Payment was unsuccessful. Please try again.",
+        variant: "destructive",
+      });
+    });
+    rzp.open();
   };
 
   const handlePayment = () => {
